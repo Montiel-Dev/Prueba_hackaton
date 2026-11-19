@@ -70,6 +70,14 @@ const UI = {
           <button class="btn btn-primary" id="btn-continue">Continuar: ${nextBlock.title}</button>
         </div>
       </div>
+      <div class="lesson-card">
+        <div class="pay-head"><h2>Arcade</h2></div>
+        <p class="lead">Práctica infinita con ejercicios nuevos al azar y vidas, y un examen
+        cronometrado de 10 preguntas. Con Pro: vidas ilimitadas y exámenes sin límite diario.</p>
+        <div class="action-row">
+          <a class="btn btn-primary" href="arcade.html" style="text-decoration:none;display:inline-block">Entrar al Arcade</a>
+        </div>
+      </div>
       ${Pay.cardHTML()}
       <div class="lesson-card">
         <h2 style="font-size:15px;color:var(--text-dim);">Cómo leer los colores de las fórmulas</h2>

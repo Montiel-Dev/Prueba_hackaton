@@ -110,6 +110,7 @@ derivadas-dojo/
 ├─ js/dragdrop.js        constructor de fichas (arrastrar / tocar)
 ├─ js/ui.js              pantallas e interacción
 └─ js/main.js            arranque de la app
+├─ arcade.html           Arcade: práctica infinita con vidas + examen cronometrado
 ├─ js/pay.js             Dojo Pro: botón y retorno del pago simulado
 ├─ api/                  funciones de servidor (Vercel): crear y verificar pago
 ├─ lib/mp.js             helpers de Mercado Pago + candado de "solo cuentas de prueba"
@@ -178,3 +179,21 @@ Esta parte **sí necesita servidor**, así que funciona en Vercel o con `vercel 
   de prueba.
 - El estado "Pro" se guarda en `localStorage` (como todo el progreso), así que es una demo,
   no una protección real contra alguien que edite su navegador.
+
+
+## Arcade (práctica infinita con vidas + examen cronometrado)
+
+`arcade.html` es una página aparte (en Vercel queda en `/arcade`) enlazada desde la pantalla principal.
+Comparte el mismo `localStorage` y el mismo Pro (`Pay.isPro()`) que el resto de la app.
+
+- **Práctica infinita:** ejercicios generados al azar (potencia, polinomio, cadena, trigonométricas,
+  exponencial, logaritmo y producto), 4 opciones con errores típicos como distractores y explicación.
+- **Vidas:** el plan gratis tiene 5; cada error quita una y se recupera 1 cada 5 minutos.
+- **Examen cronometrado:** 10 preguntas en 10 minutos, sin feedback hasta entregar; muestra nota,
+  estrellas y corrección. Guarda mejor nota e historial.
+- **Gratis vs Pro:** gratis = vidas limitadas y 1 examen al día; Pro = vidas y exámenes ilimitados.
+- **Configuración:** constantes al inicio del `<script>` de `arcade.html` (`LIFE_MAX`, `REGEN_MS`,
+  `EXAM_Q`, `EXAM_SECS`, `FREE_EXAMS_PER_DAY`). Para probar rápido: `REGEN_MS = 20000`.
+- **Agregar un tipo de ejercicio:** añade una función al arreglo `GENS` que devuelva
+  `{q, ok, bad:[3 errores], why}`.
+- El pago del botón "Obtener Pro" usa `Pay.start()` (necesita Vercel o `vercel dev`).
