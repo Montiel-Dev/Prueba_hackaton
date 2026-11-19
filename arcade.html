@@ -59,7 +59,7 @@ const LIFE_MAX = 5;               // vidas máximas del plan gratis
 const REGEN_MS = 5 * 60 * 1000;   // 1 vida se recupera cada 5 min (pon 20000 para probar rápido)
 const EXAM_Q = 10;                // preguntas por examen
 const EXAM_SECS = 600;            // duración del examen (10 min)
-const FREE_EXAMS_PER_DAY = 1;     // exámenes gratis al día
+const FREE_EXAMS_PER_DAY = 0;     // exámenes gratis al día (0 = el examen se desbloquea solo con Pro)
 const KEY = 'dojo-arcade-v1';
 
 /* ============ ESTADO Y PERSISTENCIA ============ */
@@ -70,7 +70,7 @@ const save = ()=>{try{localStorage.setItem(KEY, JSON.stringify(S))}catch(e){}};
 /* Pro real: lee el comprobante que guarda js/pay.js (Mercado Pago, pago simulado) */
 const isPro = ()=> typeof Pay!=='undefined' && Pay.isPro();
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',6000)}
-async function goPro(){ try{ await Pay.start(); }catch(e){ toast(e.message); } }
+async function goPro(){ try{ localStorage.setItem('dojo-after-pay','arcade.html'); await Pay.start(); }catch(e){ localStorage.removeItem('dojo-after-pay'); toast(e.message); } }
 
 /* ============ VIDAS ============ */
 function tick(){
@@ -172,8 +172,8 @@ const VIEWS = {
       <button class="btn" onclick="startPractice()">Practicar</button></div>
     <div class="card"><h2>Examen cronometrado</h2>
       <p class="mu">${EXAM_Q} preguntas, ${EXAM_SECS/60} minutos, sin pistas. Ves tu calificación y las correcciones al final.</p>
-      <p class="mu">${isPro()?'Intentos ilimitados.':`Exámenes gratis hoy: ${examsLeft()} de ${FREE_EXAMS_PER_DAY}.`}  Mejor nota: ${S.best}/${EXAM_Q}</p>
-      <button class="btn" onclick="startExam()">Empezar examen</button>
+      <p class="mu">${isPro()?'Intentos ilimitados.':examsLeft()>0?`Exámenes gratis hoy: ${examsLeft()} de ${FREE_EXAMS_PER_DAY}.`:'🔒 Se desbloquea con Pro.'}  Mejor nota: ${S.best}/${EXAM_Q}</p>
+      ${examsLeft()>0?'<button class="btn" onclick="startExam()">Empezar examen</button>':'<button class="btn" onclick="goPro()">Desbloquear con Pro</button>'}
       ${S.hist.length?`<p class="mu">Últimos: ${S.hist.map(h=>h.s+'/'+EXAM_Q).join(' · ')}</p>`:''}</div>
     <div class="card"><h2>${isPro()?'✓ Dojo Pro activo':'Dojo Pro'}</h2>
       <p class="mu">Vidas ilimitadas y exámenes sin límite diario.</p>
@@ -196,8 +196,8 @@ const VIEWS = {
       <button class="lnk" onclick="home()">Volver al inicio</button></div>`,
 
   exlimit: ()=>`
-    <div class="card"><h2>Ya hiciste tu examen gratis de hoy</h2>
-      <p class="mu">Vuelve mañana o activa Pro para hacer exámenes sin límite.</p>
+    <div class="card"><h2>${FREE_EXAMS_PER_DAY?'Ya hiciste tu examen gratis de hoy':'El examen es exclusivo de Pro'}</h2>
+      <p class="mu">Con Pro haces exámenes cronometrados sin límite.</p>
       <button class="btn" onclick="goPro()">Obtener Pro con Mercado Pago</button>
       <button class="lnk" onclick="home()">Volver al inicio</button></div>`,
 

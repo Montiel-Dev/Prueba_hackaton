@@ -191,9 +191,10 @@ Comparte el mismo `localStorage` y el mismo Pro (`Pay.isPro()`) que el resto de 
 - **Vidas:** el plan gratis tiene 5; cada error quita una y se recupera 1 cada 5 minutos.
 - **Examen cronometrado:** 10 preguntas en 10 minutos, sin feedback hasta entregar; muestra nota,
   estrellas y corrección. Guarda mejor nota e historial.
-- **Gratis vs Pro:** gratis = vidas limitadas y 1 examen al día; Pro = vidas y exámenes ilimitados.
+- **Gratis vs Pro:** gratis = práctica con vidas limitadas y examen bloqueado (🔒); Pro = práctica sin vidas
+  y exámenes ilimitados. Al pagar desde el Arcade, se vuelve a él ya desbloqueado.
 - **Configuración:** constantes al inicio del `<script>` de `arcade.html` (`LIFE_MAX`, `REGEN_MS`,
-  `EXAM_Q`, `EXAM_SECS`, `FREE_EXAMS_PER_DAY`). Para probar rápido: `REGEN_MS = 20000`.
+  `EXAM_Q`, `EXAM_SECS`, `FREE_EXAMS_PER_DAY`; con 0 el examen es solo para Pro). Para probar rápido: `REGEN_MS = 20000`.
 - **Agregar un tipo de ejercicio:** añade una función al arreglo `GENS` que devuelva
   `{q, ok, bad:[3 errores], why}`.
 - El pago del botón "Obtener Pro" usa `Pay.start()` (necesita Vercel o `vercel dev`).
